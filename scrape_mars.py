@@ -59,8 +59,11 @@ def scrape():
 
 	### Scraping Mars Hemispheres images
 	# Visit each of the links from the url to get image links
+	browser = init_brawser()
 	hemi_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 	browser.visit(hemi_url)
+
+	hemisphere_image_urls = []
 
 	for i in range(4):
 		# Find the elements on each loop to avoid a stale element exception
@@ -97,7 +100,7 @@ def scrape():
 
 
 
-# scrape()
+print(scrape())
 
 
 
