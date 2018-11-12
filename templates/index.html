@@ -10,30 +10,20 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
   <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/main.css') }}"">
-<!-- 	<meta charset="UTF-8">
-	<meta name="viewport", content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Mission to Mars | Index</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css"> --> 
 </head>
 
 <body>
 	<div class="container-fluid">
 		<section class="jumbotron text-center">
 			<h1>Mission to Mars</h1>
-			<p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+			<p style="margin-top: 35px;"><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
 		</section>
 
-		<section style="margin-top:30px;">
+		<section style="margin-top:50px;">
 			<h2>Latest Mars News</h2>
 			<h4 style="margin-top: 30px;">{{ mars_news_from_mongo.title }}</h4>
-			<p>
-				<span>{{ mars_news_from_mongo.paragraph }}</span>
-				<span>(Publushed on {{ mars_news_from_mongo.publish_date }})</span>
-			</p>
+			<p>{{ mars_news_from_mongo.paragraph }}</p>
+			<p><small>Publush Date: {{ mars_news_from_mongo.publish_date }}</small></p>
 		</section>
 
 		<section style="margin-top:30px; display: block; height: auto; clear:both; overflow:auto;">
