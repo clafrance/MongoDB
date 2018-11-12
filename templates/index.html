@@ -32,7 +32,7 @@
 
 			<div id="featured_img">
 				<h2>Featured Mars Image</h2>
-				<img src={{ mars_news_from_mongo.featured_image_url }}>
+				<img src={{mars_news_from_mongo.featured_image_url}} >
 			</div>
 
 			<div id="info_panel">
@@ -55,12 +55,11 @@
 				<div class="hemis_imgs">
 					<p><img src={{ img.url }} alt={{img.title}}></p>
 					<p class="img_title">
-						<span><b>{{img.title}}</b></span>
+						<span><b>{{ img.title }}</b></span>
 					</p>
 				</div>
 			{% endfor %}
 		</section>
 	</div>
-
 </body>
 </html>
