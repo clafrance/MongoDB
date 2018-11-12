@@ -24,11 +24,22 @@ def index():
 def scraper():
 	mars_news = mongo.db.mars_news
 
-	####### to be finished: add try here
-	mars_news_data = scrape_mars.scrape()
+	# add try to handle data scraping exception
+	try:
+		mars_data = scrape_mars.scrape()
+	except Exception as e:
+		mars_data = {}
+		print("Scraping data failed with error: ", e)
 
-	####### to be finished: only update MongoDb data if mars_news_data get updated successfully
-	mars_news.update({}, mars_news_data, upsert=True)
+	# only update the mongodb when there is data returned from scraping
+	if (mars_data and mars_data["publish_date"] and 
+			mars_data["title"] and mars_data["paragraph"] and 
+			mars_data["weather"] and 
+			mars_data["featured_image_url"] and 
+			mars_data["html_table"] and 
+			mars_data["hemisphere_image_urls"]):
+		mars_news.update({}, mars_data, upsert=True)
+
 	return redirect("/", code=302)
 
 
