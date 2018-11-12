@@ -1,6 +1,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup
 import pandas as pd
+import time
 
 def init_brawser():
 	# On my machine, chromedriver is installed using rvm
@@ -10,28 +11,30 @@ def init_brawser():
 	return Browser('chrome', **executable_path, headless=False)
 
 
-def grab_html(url):
-	browser = init_brawser()
-	url = url
+def grab_html(browser, url):
 	browser.visit(url)
+	time.sleep(2)
 	html = browser.html
 	return BeautifulSoup(html, 'html.parser').body
 
 
 def scrape():
 	### Scraping NASA Mars News
+	browser = init_brawser()
 	news_url = "https://mars.nasa.gov/news/"
-	news_soup = grab_html(news_url)
+	news_soup = grab_html(browser, news_url)
 
 	news_container = news_soup.find('div', class_='image_and_description_container')
 	news_date = news_container.find('div', class_='list_date').text
 	news_title = news_container.find('div', class_='content_title').text.strip()
 	news_p = news_container.find('div', class_='rollover_description_inner').text.strip()
+	browser.quit()	
 
 
 	### Scraping JPL Mars Space Images - Featured Images
+	browser = init_brawser()
 	img_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-	img_soup = grab_html(img_url)
+	img_soup = grab_html(browser, img_url)
 
 	# Get file name for the front image 
 	img_style = img_soup.find('div', class_='carousel_items')
@@ -39,10 +42,20 @@ def scrape():
 	img_file = img_style_orig.split(".")[0].split("/")[-1].split("-")[0]
 	img_base_url = "https://www.jpl.nasa.gov/spaceimages/images/largesize/"
 	featured_image_url = img_base_url + img_file + "_hires.jpg"
+	browser.quit()	
+
+
+	### Scraping Mars Most Recent Weather info
+	browser = init_brawser()
+	weather_url = 'https://twitter.com/marswxreport?lang=en'
+	weather_soup = grab_html(browser, weather_url)
+	mars_weather = weather_soup.find('p', class_="tweet-text").text.strip()
+	browser.quit()	
 
 
 	### Scraping Mars Facts, Put it into html table using panda
 	# Read the data into a panda table
+	browser = init_brawser()
 	facts_url = 'http://space-facts.com/mars/'
 	tables = pd.read_html(facts_url)
 
@@ -54,7 +67,10 @@ def scrape():
 
 	# Add index to the data frame
 	df.set_index('', inplace=True)
-	html_table = df.to_html(table_id=None)
+	html_table = df.to_html(table_id=None).strip()
+	html_table = html_table.replace('\n', '')
+	# html_table = html_table.replace('<tr><th></th><th></th></tr>', '')
+	browser.quit()	
 
 
 	### Scraping Mars Hemispheres images
@@ -80,7 +96,7 @@ def scrape():
 		hemi_soup = BeautifulSoup(hemi_html, 'lxml').body
 		hemi_img_url = hemi_soup.find('div', class_="downloads").li.a['href']
 
-		hemi_img_info = {'title': img_title, 'img_url': hemi_img_url}
+		hemi_img_info = {'title': img_title, 'url': hemi_img_url}
 
 		# Append image info to list
 		hemisphere_image_urls.append(hemi_img_info)
@@ -90,9 +106,10 @@ def scrape():
 
 
 	browser.quit()	
-	return {"News Date": news_date,
-					"News Title": news_title,
-					"News Paragraph": news_p,
+	return {"publish_date": news_date,
+					"title": news_title,
+					"paragraph": news_p,
+					"weather": mars_weather,
 					"featured_image_url": featured_image_url,
 					"html_table": html_table,
 					"hemisphere_image_urls": hemisphere_image_urls

@@ -15,42 +15,39 @@
 	<div class="container-fluid">
 		<div class="jumbotron text-center">
 			<h1>Mission to Mars</h1>
-			<p><a href="/scrape" class="btn btn-primary btn-lg" role="button">Scrape Data</a></p>
+			<p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape Data</a></p>
 		</div>
 
 		<div>
 			<h2>Latest Mars News</h2>
-			<p>Date</p>
-			<p>News Title</p>
-			<p>News Body</p>
+			<p>{{ mars_news_from_mongo.title }}</p>
+			<p>Publish Date: {{ mars_news_from_mongo.publish_date }}</p>
+			<p>{{ mars_news_from_mongo.paragraph }}</p>
 		</div>
 
 		<div>
 			<h2>Featured Mars Image</h2>
-			<img>
+			<img src={{ mars_news_from_mongo.featured_image_url }}>
 		</div>
 
 		<div>
 			<div>
 				<h4>Current Weather on Mars</h4>
-				<p>Weather details</p>
+				<p>{{ mars_news_from_mongo.weather }}</p>
 			</div>
 
 			<div>
 				<h4>Mars Facts</h4>
-				<Table>
-					Facts table
-				</Table>
+   				{{ mars_news_from_mongo.html_table|safe }}
 			</div>
 		</div>
 
 		<div>
 			<h4>Mars Hemispheres</h4>
 			<div>
-				<a href="#" alt="img1">img1</a>
-				<a href="#" alt="img1">img2</a>
-				<a href="#" alt="img1">img3</a>
-				<a href="#" alt="img1">img4</a>
+				{% for img in mars_news_from_mongo.hemisphere_image_urls %}
+					<p><img src={{ img.url }} alt={{img.title}}>{{img.title}}</p>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
