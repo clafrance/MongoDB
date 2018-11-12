@@ -2,54 +2,68 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
+	<title>Mission to Mars | Index</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/main.css') }}"">
+<!-- 	<meta charset="UTF-8">
 	<meta name="viewport", content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Mission to Mars | Index</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css"> --> 
 </head>
 
 <body>
 	<div class="container-fluid">
-		<div class="jumbotron text-center">
+		<section class="jumbotron text-center">
 			<h1>Mission to Mars</h1>
-			<p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape Data</a></p>
-		</div>
+			<p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+		</section>
 
-		<div>
+		<section style="margin-top:30px;">
 			<h2>Latest Mars News</h2>
-			<p>{{ mars_news_from_mongo.title }}</p>
-			<p>Publish Date: {{ mars_news_from_mongo.publish_date }}</p>
-			<p>{{ mars_news_from_mongo.paragraph }}</p>
-		</div>
+			<h4 style="margin-top: 30px;">{{ mars_news_from_mongo.title }}</h4>
+			<p>
+				<span>{{ mars_news_from_mongo.paragraph }}</span>
+				<span>(Publushed on {{ mars_news_from_mongo.publish_date }})</span>
+			</p>
+		</section>
 
-		<div>
-			<h2>Featured Mars Image</h2>
-			<img src={{ mars_news_from_mongo.featured_image_url }}>
-		</div>
-
-		<div>
-			<div>
-				<h4>Current Weather on Mars</h4>
-				<p>{{ mars_news_from_mongo.weather }}</p>
+		<section style="margin-top:30px; display: block; height: auto; clear:both; overflow:auto;">
+			<div style="float: left; width: 70%; margin-right: 2.5%; overflow: auto; clear:both;">
+				<h2 style="margin-bottom: 30px;">Featured Mars Image</h2>
+				<img src={{ mars_news_from_mongo.featured_image_url }} width=100% height=auto>
 			</div>
 
-			<div>
-				<h4>Mars Facts</h4>
-   				{{ mars_news_from_mongo.html_table|safe }}
-			</div>
-		</div>
+			<div style="height: auto; overflow: auto; margin-top: 80px;">
+				<div style="margin-bottom: 30px; border: 1px solid #DDD; max-width: 335px; padding: 10px 20px 10px 20px;">
+					<h4 style="">Current Weather on Mars</h4>
+					<p style="margin-top: 15px;">{{ mars_news_from_mongo.weather }}</p>
+				</div>
 
-		<div>
-			<h4>Mars Hemispheres</h4>
-			<div>
-				{% for img in mars_news_from_mongo.hemisphere_image_urls %}
-					<p><img src={{ img.url }} alt={{img.title}}>{{img.title}}</p>
-				{% endfor %}
+				<div>
+					<h4 style="margin-bottom: 20px;">Mars Facts</h4>
+	   				{{ mars_news_from_mongo.html_table|safe }}
+				</div>
 			</div>
-		</div>
+		</section>
+
+		<section style="margin-top:50px; display: block; width=100%; height: auto; clear:both; overflow:auto;">
+			<h2 style="text-align: center;">Mars Hemispheres</h2>
+			{% for img in mars_news_from_mongo.hemisphere_image_urls %}
+				<div style="float: left; width: 46%; margin: 2% 4% 2% 0; padding-bottom: 2%; border: 1px solid #DDD;">
+					<p><img src={{ img.url }} alt={{img.title}} width=100% height=auto></p>
+					<p style="margin-top: 20px;"><span style="margin-left: 15px;"><b>{{img.title}}</b></span></p>
+				</div>
+			{% endfor %}
+		</section>
 	</div>
 </body>
 

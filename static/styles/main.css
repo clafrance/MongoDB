@@ -1,0 +1,14 @@
+.left-side {
+	border: 1px solid red;
+	float: left;
+}
+
+.right-side {
+	border: 1px solid blue;
+	margin-left: 30px;
+	float: left;
+}
+
+section {
+	margin-top: 20px;
+}
