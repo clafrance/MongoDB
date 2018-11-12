@@ -21,6 +21,7 @@ def grab_html(browser, url):
 def scrape():
 	### Scraping NASA Mars News
 	browser = init_brawser()
+
 	news_url = "https://mars.nasa.gov/news/"
 	news_soup = grab_html(browser, news_url)
 
@@ -28,34 +29,28 @@ def scrape():
 	news_date = news_container.find('div', class_='list_date').text
 	news_title = news_container.find('div', class_='content_title').text.strip()
 	news_p = news_container.find('div', class_='rollover_description_inner').text.strip()
-	browser.quit()	
 
 
 	### Scraping JPL Mars Space Images - Featured Images
-	browser = init_brawser()
 	img_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
 	img_soup = grab_html(browser, img_url)
 
 	# Get file name for the front image 
-	img_style = img_soup.find('div', class_='carousel_items')
-	img_style_orig = img_style.find('article')['style']
-	img_file = img_style_orig.split(".")[0].split("/")[-1].split("-")[0]
+	img_item = img_soup.find('div', class_='carousel_items')
+	img_file = img_item.find('article')['style']
+	img_file_name = img_file.split(".")[0].split("/")[-1].split("-")[0]
 	img_base_url = "https://www.jpl.nasa.gov/spaceimages/images/largesize/"
-	featured_image_url = img_base_url + img_file + "_hires.jpg"
-	browser.quit()	
+	featured_image_url = img_base_url + img_file_name + "_hires.jpg"
 
 
 	### Scraping Mars Most Recent Weather info
-	browser = init_brawser()
 	weather_url = 'https://twitter.com/marswxreport?lang=en'
 	weather_soup = grab_html(browser, weather_url)
 	mars_weather = weather_soup.find('p', class_="tweet-text").text.strip()
-	browser.quit()	
 
 
 	### Scraping Mars Facts, Put it into html table using panda
 	# Read the data into a panda table
-	browser = init_brawser()
 	facts_url = 'http://space-facts.com/mars/'
 	tables = pd.read_html(facts_url)
 
@@ -69,13 +64,10 @@ def scrape():
 	df.set_index('', inplace=True)
 	html_table = df.to_html(table_id=None).strip()
 	html_table = html_table.replace('\n', '')
-	# html_table = html_table.replace('<tr><th></th><th></th></tr>', '')
-	browser.quit()	
 
 
 	### Scraping Mars Hemispheres images
 	# Visit each of the links from the url to get image links
-	browser = init_brawser()
 	hemi_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 	browser.visit(hemi_url)
 
@@ -106,6 +98,7 @@ def scrape():
 
 
 	browser.quit()	
+
 	return {"publish_date": news_date,
 					"title": news_title,
 					"paragraph": news_p,

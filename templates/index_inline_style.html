@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Mission to Mars | Index</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/main.css') }}"">
+</head>
+
+<body>
+	<div class="container-fluid">
+		<section class="jumbotron text-center">
+			<h1>Mission to Mars</h1>
+			<p style="margin-top: 35px;"><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+		</section>
+
+		<section style="margin-top:50px;">
+			<h2>Latest Mars News</h2>
+			<h4 style="margin-top: 30px;">{{ mars_news_from_mongo.title }}</h4>
+			<p>{{ mars_news_from_mongo.paragraph }}</p>
+			<p><small>Publush Date: {{ mars_news_from_mongo.publish_date }}</small></p>
+		</section>
+
+		<section style="margin-top:30px; display: block; height: auto; clear:both; overflow:auto;">
+			<div style="float: left; width: 70%; margin-right: 2.5%; overflow: auto; clear:both;">
+				<h2 style="margin-bottom: 30px;">Featured Mars Image</h2>
+				<img src={{ mars_news_from_mongo.featured_image_url }} width=100% height=auto>
+			</div>
+
+			<div style="height: auto; overflow: auto; margin-top: 80px;">
+				<div style="margin-bottom: 30px; border: 1px solid #DDD; max-width: 335px; padding: 10px 20px 10px 20px;">
+					<h4 style="">Current Weather on Mars</h4>
+					<p style="margin-top: 15px;">{{ mars_news_from_mongo.weather }}</p>
+				</div>
+
+				<div>
+					<h4 style="margin-bottom: 20px;">Mars Facts</h4>
+	   				{{ mars_news_from_mongo.html_table|safe }}
+				</div>
+			</div>
+		</section>
+
+		<section style="margin-top:50px; display: block; width=100%; height: auto; clear:both; overflow:auto;">
+			<h2 style="text-align: center;">Mars Hemispheres</h2>
+			{% for img in mars_news_from_mongo.hemisphere_image_urls %}
+				<div style="float: left; width: 46%; margin: 2% 4% 2% 0; padding-bottom: 2%; border: 1px solid #DDD;">
+					<p><img src={{ img.url }} alt={{img.title}} width=100% height=auto></p>
+					<p style="margin-top: 20px;"><span style="margin-left: 15px;"><b>{{img.title}}</b></span></p>
+				</div>
+			{% endfor %}
+		</section>
+	</div>
+</body>
+
+</html>
