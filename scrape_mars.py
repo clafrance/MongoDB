@@ -13,7 +13,7 @@ def init_brawser():
 
 def grab_html(browser, url):
 	browser.visit(url)
-	# time.sleep(2)
+	time.sleep(2)
 	html = browser.html
 	return BeautifulSoup(html, 'html.parser').body
 
